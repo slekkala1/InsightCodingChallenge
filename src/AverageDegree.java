@@ -11,7 +11,6 @@ import java.util.*;
 
 /**
  * Created by swapnalekkala on 4/5/16.
- * follow submission instructions
  */
 public class AverageDegree {
 
@@ -19,7 +18,6 @@ public class AverageDegree {
     public static Map<String, Long> nodeTimeStampMap = new HashMap<>();
     public static PriorityQueue<Tweet> minHeap = new PriorityQueue<>(10, new TweetComparator());
 
-    //change later
     public static long maxTimeStamp = 0;
     public static long SLIDING_WINDOW_TIME_IN_MILLIS = 60000;
 
@@ -57,8 +55,8 @@ public class AverageDegree {
         if (tweet == null) {
             return false;
         }
+
         maxTimeStamp = Math.max(maxTimeStamp, tweet.getTimeStamp());
-        //include tweet if in 60 sec sliding window
         if (!(maxTimeStamp - tweet.getTimeStamp() > SLIDING_WINDOW_TIME_IN_MILLIS)) {
             if (tweet.getNodes().size() <= 1) {
                 return true;
@@ -66,11 +64,10 @@ public class AverageDegree {
             for (String hashTag : tweet.getNodes()) {
                 nodeTimeStampMap.put(hashTag, tweet.getTimeStamp());
             }
-            //add edges to edgeList
             generateEdges(tweet);
             minHeap.add(tweet);
         }
-        // find in minHeap the timeStamps that need to be removed
+
         if (!minHeap.isEmpty()) {
             updateMinHeap();
         }
