@@ -59,10 +59,8 @@ public class AverageDegree {
         maxTimeStamp = Math.max(maxTimeStamp, tweet.getTimeStamp());
 
         //include tweet if in 60 sec sliding window
-        if (!(maxTimeStamp - tweet.getTimeStamp() > SLIDING_WINDOW_TIME_IN_MILLIS)) {
-            if (tweet.getNodes().size() <= 1) {
-                return true;
-            }
+        if (!(maxTimeStamp - tweet.getTimeStamp() > SLIDING_WINDOW_TIME_IN_MILLIS) && tweet.getNodes().size() > 1) {
+
             for (String hashTag : tweet.getNodes()) {
                 nodeTimeStampMap.put(hashTag, tweet.getTimeStamp());
             }
