@@ -55,8 +55,10 @@ public class AverageDegree {
         if (tweet == null) {
             return false;
         }
-
+        //Update timestamp when a new Tweet arrives
         maxTimeStamp = Math.max(maxTimeStamp, tweet.getTimeStamp());
+
+        //include tweet if in 60 sec sliding window
         if (!(maxTimeStamp - tweet.getTimeStamp() > SLIDING_WINDOW_TIME_IN_MILLIS)) {
             if (tweet.getNodes().size() <= 1) {
                 return true;
@@ -64,10 +66,13 @@ public class AverageDegree {
             for (String hashTag : tweet.getNodes()) {
                 nodeTimeStampMap.put(hashTag, tweet.getTimeStamp());
             }
+
+            //add edges to edgeList
             generateEdges(tweet);
             minHeap.add(tweet);
         }
 
+        // find in minHeap the timeStamps that need to be removed
         if (!minHeap.isEmpty()) {
             updateMinHeap();
         }
@@ -85,7 +90,7 @@ public class AverageDegree {
 
     private static void removeEdges(Tweet tweet) {
         long tweetTimeStamp = tweet.getTimeStamp();
-        Set<Pair<String, String>> edgeSet = tweet.getEdgeList();
+        Set<Pair<String, String>> edgeSet = tweet.getEdgeSet();
 
         for (Pair<String, String> hashtagEdge : edgeSet) {
             if (edgeTimeStampMap.containsKey(hashtagEdge)) {
@@ -109,7 +114,7 @@ public class AverageDegree {
     }
 
     private static void generateEdges(Tweet tweet) {
-        for (Pair<String, String> edge : tweet.getEdgeList()) {
+        for (Pair<String, String> edge : tweet.getEdgeSet()) {
             if (edgeTimeStampMap.containsKey(edge)) {
                 if (edgeTimeStampMap.get(edge) < tweet.getTimeStamp()) {
                     edgeTimeStampMap.put(edge, tweet.getTimeStamp());

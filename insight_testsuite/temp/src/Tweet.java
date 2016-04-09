@@ -15,7 +15,7 @@ public class Tweet {
     public Tweet(long timeInMillis, Set<String> hashtags) {
         timeStamp = timeInMillis;
         nodes = hashtags;
-        edgeSet = createEdgeList();
+        edgeSet = createEdgeSet();
     }
 
     public long getTimeStamp() {
@@ -34,7 +34,7 @@ public class Tweet {
         this.nodes = nodes;
     }
 
-    private Set<Pair<String, String>> createEdgeList() {
+    private Set<Pair<String, String>> createEdgeSet() {
         String[] result = this.nodes.toArray(new String[this.nodes.size()]);
         for (int i = 0; i < result.length; i++) {
             for (int j = i + 1; j < result.length; j++) {
@@ -45,7 +45,7 @@ public class Tweet {
         return edgeSet;
     }
 
-    public Set<Pair<String, String>> getEdgeList() {
+    public Set<Pair<String, String>> getEdgeSet() {
         return edgeSet;
     }
 }
